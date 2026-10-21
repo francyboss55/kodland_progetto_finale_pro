@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../static/css/style.css">
+  <title>Pannello solare - Calcolatore energetico</title>
+</head>
+<body>
+  <header class="header">
+    <div class="header__text">
+      <h1>Calcola l'efficienza energetica della tua casa!</h1>
+      <p>Indica il numero di pannelli solari presenti nella tua casa.</p>
+    </div>
+  </header>
+  <main>
+    <h2 class="main__title">Selezionare il numero di pannelli solari:</h2>
+    <ul class="list device-list">
+      <li class="list__item">
+        <a href="{{ size + '/' + lights + '/4' }}">
+          <img class="item__img" src="../../static/img/pannello_solare.png" alt="Pannello solare">
+          <span>1-2 pannelli</span>
+        </a>
+      </li>
+      <li class="list__item">
+        <a href="{{ size + '/' + lights + '/7' }}">
+          <img class="item__img" src="../../static/img/pannello_solare.png" alt="Pannello solare">
+          <span>3-4 pannelli</span>
+        </a>
+      </li>
+      <li class="list__item">
+        <a href="{{ size + '/' + lights + '/10' }}">
+          <img class="item__img" src="../../static/img/pannello_solare.png" alt="Pannello solare">
+          <span>5+ pannelli</span>
+        </a>
+      </li>
+    </ul>
+  </main>
+  <footer></footer>
+</body>
+</html>

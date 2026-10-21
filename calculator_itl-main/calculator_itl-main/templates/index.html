@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calcola il consumo energetico della tua casa">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <title>Calcolatore energia casa</title>
+</head>
+<body>
+  <header class="header header--home">
+    <div class="header__text">
+      <p class="eyebrow">Smart home</p>
+      <h1>Hai un controllo migliore del tuo consumo energetico?</h1>
+      <p>Rispondi a pochi semplici questionari e scopri quanto energia usa la tua casa.</p>
+      <a class="button button--link" href="{{ url_for('calculator') }}">Inizia il calcolo</a>
+    </div>
+  </header>
+
+  <main class="home-shell">
+    <section class="home-feature">
+      <span class="feature-icon">⚡</span>
+      <h2>Calcolo personalizzato</h2>
+      <p>Include computer, lampadine, schermi, impianti rinnovabili e altri dispositivi.</p>
+    </section>
+    <section class="home-feature">
+      <span class="feature-icon">🌿</span>
+      <h2>Consigli intelligenti</h2>
+      <p>Scopri dove migliorare il consumo e quanti kWh puoi risparmiare.</p>
+    </section>
+    <section class="home-feature">
+      <span class="feature-icon">📊</span>
+      <h2>Risultati chiari</h2>
+      <p>Ottieni consumi mensili, annuali e la percentuale coperta da energia pulita.</p>
+    </section>
+  </main>
+</body>
+</html>

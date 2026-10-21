@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+  >
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="../static/css/style.css">
+  <title>Calcolatore di efficienza energetica per smart home</title>
+</head>
+<body>
+  <header class="header">
+    <div class="header__text">
+      <h1>Calcola l'efficienza energetica della tua casa!</h1>
+      <p>Prendi l'iniziativa e risolvi il problema del consumo eccessivo di energia!</p>
+    </div>
+  </header>
+  <main>
+    {% block content %}
+    <h2 class="main__title">Specificare il numero di dispositivi che utilizzano energia elettrica:</h2>
+    <ul class="list" id="list">
+      <!-- Consegna #3 -->
+      <li class="list__item">
+        <a href="{{ size + '/' + lights + '/4' }}">
+          <img class="item__img" src="../static/img/battery.svg" alt="battery">
+          <span>3-5 dispositivi</span></a>
+      </li>
+      <li class="list__item">
+        <a href="{{ size + '/' + lights + '/7' }}">
+          <img class="item__img" src="../static/img/battery.svg" alt="battery">
+          <span>6-8 dispositivi</span></a>
+      </li>
+      <li class="list__item">
+        <a href="{{ size + '/' + lights + '/10' }}">
+          <img class="item__img" src="../static/img/battery.svg" alt="battery">
+          <span>10+ dispositivi</span></a>
+      </li>
+    </ul>
+
+    <h2 class="main__title main__title--margin">Selezionare un dispositivo:</h2>
+    <ul class="list device-list">
+      <li class="list__item">
+        <a href="{{size + lights + '/computer'}}">
+          <img class="item__img" src="../static/img/computer.png" alt="computer">
+          <span>Computer</span>
+        </a>
+      </li>
+      <li class="list__item">
+        <a href="{{size + lights + '/cameras'}}">
+          <img class="item__img" src="../static/img/camini.svg" alt="camere">
+          <span>Camere</span>
+        </a>
+      </li>
+      <li class="list__item">
+        <a href="{{size + lights + '/solar_panel'}}">
+          <img class="item__img" src="../static/img/pannello_solare.png" alt="pannello solare">
+          <span>Pannello solare</span>
+        </a>
+      </li>
+      <li class="list__item">
+        <a href="{{size + lights + '/screen'}}">
+          <img class="item__img" src="../static/img/screen.png" alt="schermo">
+          <span>Schermo</span>
+        </a>
+      </li>
+    </ul>
+    {% endblock %}
+  </main>
+  <footer>
+
+  </footer>
+</body>
+</html>

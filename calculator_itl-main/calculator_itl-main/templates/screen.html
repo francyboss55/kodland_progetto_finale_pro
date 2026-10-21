@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../../static/css/style.css">
+  <title>Schermo - Calcolatore energetico</title>
+</head>
+<body>
+  <header class="header">
+    <div class="header__text">
+      <h1>Calcola l'efficienza energetica della tua casa!</h1>
+      <p>Indica il numero di schermi presenti nella tua casa.</p>
+    </div>
+  </header>
+  <main>
+    <h2 class="main__title">Selezionare il numero di schermi:</h2>
+    <ul class="list device-list">
+      <li class="list__item">
+        <a href="{{ size + '/' + lights + '/4' }}">
+          <img class="item__img" src="../../static/img/screen.png" alt="Schermo televisivo">
+          <span>1-2 schermi</span>
+        </a>
+      </li>
+      <li class="list__item">
+        <a href="{{ size + '/' + lights + '/7' }}">
+          <img class="item__img" src="../../static/img/screen.png" alt="Schermo televisivo">
+          <span>3-4 schermi</span>
+        </a>
+      </li>
+      <li class="list__item">
+        <a href="{{ size + '/' + lights + '/10' }}">
+          <img class="item__img" src="../../static/img/screen.png" alt="Schermo televisivo">
+          <span>5+ schermi</span>
+        </a>
+      </li>
+    </ul>
+  </main>
+  <footer></footer>
+</body>
+</html>

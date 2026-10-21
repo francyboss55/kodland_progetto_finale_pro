@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <title>Risultato del calcolo</title>
+</head>
+<body>
+  <header class="header header--result">
+    <div class="header__text">
+      <p class="eyebrow">Risultato</p>
+      <h1>La stima della tua casa</h1>
+      <p>Questi valori sono una previsione e possono variare secondo l’utilizzo reale.</p>
+    </div>
+  </header>
+
+  <main class="result-shell">
+    <section class="result-card result-card--primary">
+      <span class="result-label">Consumo medio</span>
+      <strong class="result-value">{{ monthly_consumption }} kWh/mese</strong>
+      <span class="result-detail">{{ annual_consumption }} kWh/all’anno</span>
+    </section>
+
+    <section class="result-grid">
+      <article class="result-card">
+        <span class="result-label">Energia pulita prodotta</span>
+        <strong class="result-value">{{ renewable_generation }} kWh/mese</strong>
+        <span class="result-detail">{{ renewable_percentage }}% del consumo</span>
+      </article>
+      <article class="result-card">
+        <span class="result-label">Consumo netto</span>
+        <strong class="result-value">{{ net_consumption }} kWh/mese</strong>
+        <span class="result-detail">Dopo aver compensato l’energia rinnova</span>
+      </article>
+    </section>
+
+    <section class="status-card {{ status_class }}">
+      <h2>{{ status_title }}</h2>
+      <p>{{ status_message }}</p>
+    </section>
+
+    <section class="recommendations">
+      <h2>Come migliorare la casa</h2>
+      <ul>
+        {% for recommendation in recommendations %}
+        <li>{{ recommendation }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <a class="button button--link" href="{{ url_for('calculator') }}">Ripeti il calcolo</a>
+  </main>
+</body>
+</html>

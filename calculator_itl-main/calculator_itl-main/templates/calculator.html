@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Calcola il consumo energetico della tua casa">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <title>Calcolatore energia casa</title>
+</head>
+<body>
+  <header class="header">
+    <div class="header__text">
+      <p class="eyebrow">Smart home</p>
+      <h1>Calcola il consumo energetico della tua casa</h1>
+      <p>Rispondi alle domande successive per ottenere una stima semplice e personalizzata.</p>
+    </div>
+  </header>
+
+  <main class="calculator-shell">
+    <form action="{{ url_for('calculate') }}" method="post" class="calculator-form">
+      {% if error_message %}
+      <div class="form-error" role="alert">
+        <strong>Controlla i dati</strong>
+        <p>{{ error_message }}</p>
+      </div>
+      {% endif %}
+
+      <section class="question-card">
+        <div class="question-heading">
+          <span class="question-number">00</span>
+          <div>
+            <h2>Quali metri quadri ha la casa?</h2>
+            <p>Indica l’area abitabile per calcolare il consumo base.</p>
+          </div>
+        </div>
+        <div class="input-row">
+          <label for="size">Superficie in m²</label>
+          <input id="size" name="size" type="number" min="1" value="{{ form_values.get('size', '80') }}" required>
+        </div>
+      </section>
+
+      <section class="question-card">
+        <div class="question-heading">
+          <span class="question-number">01</span>
+          <div>
+            <h2>Quanti computer sono collegati alla corrente?</h2>
+            <p>Se sono presenti, indica quanti per marca.</p>
+          </div>
+        </div>
+        <div class="input-row">
+          <label for="computers">Computer</label>
+          <input id="computers" name="computers" type="number" min="0" value="{{ form_values.get('computers', '0') }}" required>
+        </div>
+        <div class="brand-fields" id="computer-brands" hidden>
+          <div class="input-row">
+            <label for="computer_hp">HP</label>
+            <input id="computer_hp" name="computer_hp" type="number" min="0" value="{{ form_values.get('computer_hp', '0') }}">
+          </div>
+          <div class="input-row">
+            <label for="computer_apple">Apple</label>
+            <input id="computer_apple" name="computer_apple" type="number" min="0" value="{{ form_values.get('computer_apple', '0') }}">
+          </div>
+          <div class="input-row">
+            <label for="computer_lenovo">Lenovo</label>
+            <input id="computer_lenovo" name="computer_lenovo" type="number" min="0" value="{{ form_values.get('computer_lenovo', '0') }}">
+          </div>
+          <div class="input-row">
+            <label for="computer_other">Altra marca</label>
+            <input id="computer_other" name="computer_other" type="number" min="0" value="{{ form_values.get('computer_other', '0') }}">
+          </div>
+        </div>
+      </section>
+
+      <section class="question-card">
+        <div class="question-heading">
+          <span class="question-number">02</span>
+          <div>
+            <h2>Quante lampadine ci sono nella casa?</h2>
+            <p>Se sono presenti, indica quante sono accese di solito.</p>
+          </div>
+        </div>
+        <div class="input-row">
+          <label for="lights">Lampadine</label>
+          <input id="lights" name="lights" type="number" min="0" value="{{ form_values.get('lights', '0') }}" required>
+        </div>
+        <div class="input-row" id="lights-hours" hidden>
+          <label for="light_hours">Ore di utilizzo al giorno</label>
+          <input id="light_hours" name="light_hours" type="number" min="0" max="24" step="0.1" value="{{ form_values.get('light_hours', '5') }}">
+        </div>
+      </section>
+
+      <section class="question-card">
+        <div class="question-heading">
+          <span class="question-number">03</span>
+          <div>
+            <h2>Quanti schermi esterni HDMi ci sono nella casa?</h2>
+            <p>Questi schermi sono i display secondari o esterni collegati tramite HDMI.</p>
+          </div>
+        </div>
+        <div class="input-row">
+          <label for="screens">Schermi HDMi</label>
+          <input id="screens" name="screens" type="number" min="0" value="{{ form_values.get('screens', '0') }}" required>
+        </div>
+        <div class="screen-fields" id="screen-fields" hidden>
+          <div class="input-row">
+            <label for="screen_size">Risoluzione (pollici)</label>
+            <select id="screen_size" name="screen_size">
+              <option value="32" {% if form_values.get('screen_size', '32') == '32' %}selected{% endif %}>32”</option>
+              <option value="55" {% if form_values.get('screen_size') == '55' %}selected{% endif %}>55”</option>
+              <option value="65" {% if form_values.get('screen_size') == '65' %}selected{% endif %}>65”</option>
+              <option value="75" {% if form_values.get('screen_size') == '75' %}selected{% endif %}>75”</option>
+              <option value="85" {% if form_values.get('screen_size') == '85' %}selected{% endif %}>85”</option>
+            </select>
+          </div>
+          <div class="input-row">
+            <label for="screen_hours">Ore di utilizzo al giorno</label>
+            <input id="screen_hours" name="screen_hours" type="number" min="0" max="24" step="0.1" value="{{ form_values.get('screen_hours', '4') }}">
+          </div>
+          <p class="type-note">Tipo valido: HDMI</p>
+        </div>
+      </section>
+
+      <section class="question-card">
+        <div class="question-heading">
+          <span class="question-number">04</span>
+          <div>
+            <h2>La casa ha un sistema di energia pulita?</h2>
+            <p>Se sì, indica la quantità di ogni impianto presente.</p>
+          </div>
+        </div>
+        <div class="choice-grid">
+          <label class="choice-card">
+            <input type="radio" name="renewable" value="no" {% if form_values.get('renewable', 'no') == 'no' %}checked{% endif %}>
+            <span>No</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="renewable" value="yes" {% if form_values.get('renewable') == 'yes' %}checked{% endif %}>
+            <span>Sì</span>
+          </label>
+        </div>
+        <div class="renewable-fields" id="renewable-fields" hidden>
+          <div class="renewable-counts">
+            <div class="input-row">
+              <label for="solar_count">Pannelli solari</label>
+              <input id="solar_count" name="solar_count" type="number" min="0" value="{{ form_values.get('solar_count', '0') }}">
+            </div>
+            <div class="input-row">
+              <label for="wind_count">Turbine eoliche</label>
+              <input id="wind_count" name="wind_count" type="number" min="0" value="{{ form_values.get('wind_count', '0') }}">
+            </div>
+            <div class="input-row">
+              <label for="heat_pump_count">Pompe di calore</label>
+              <input id="heat_pump_count" name="heat_pump_count" type="number" min="0" value="{{ form_values.get('heat_pump_count', '0') }}">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="question-card">
+        <div class="question-heading">
+          <span class="question-number">05</span>
+          <div>
+            <h2>Quanti altri dispositivi sono collegati?</h2>
+            <p>Indica la quantità per ogni tipo di dispositivo.</p>
+          </div>
+        </div>
+        <div class="input-row">
+          <label for="other_devices">Altri dispositivi</label>
+          <input id="other_devices" name="other_devices" type="number" min="0" value="{{ form_values.get('other_devices', '0') }}" required>
+        </div>
+        <div class="device-fields" id="other-fields" hidden>
+          <div class="input-row">
+            <label for="other_type">Dispositivo</label>
+            <select id="other_type" name="other_type">
+              <option value="tv" {% if form_values.get('other_type', 'tv') == 'tv' %}selected{% endif %}>Televisione</option>
+              <option value="refrigerator" {% if form_values.get('other_type') == 'refrigerator' %}selected{% endif %}>Frigo</option>
+              <option value="washing_machine" {% if form_values.get('other_type') == 'washing_machine' %}selected{% endif %}>Lavatrice</option>
+              <option value="dishwasher" {% if form_values.get('other_type') == 'dishwasher' %}selected{% endif %}>Lavastoviglie</option>
+              <option value="microwave" {% if form_values.get('other_type') == 'microwave' %}selected{% endif %}>Microonde</option>
+              <option value="oven" {% if form_values.get('other_type') == 'oven' %}selected{% endif %}>Forno</option>
+              <option value="router" {% if form_values.get('other_type') == 'router' %}selected{% endif %}>Router</option>
+              <option value="charger" {% if form_values.get('other_type') == 'charger' %}selected{% endif %}>Caricatore</option>
+              <option value="air_conditioner" {% if form_values.get('other_type') == 'air_conditioner' %}selected{% endif %}>Climatizzatore</option>
+            </select>
+          </div>
+          <div class="input-row">
+            <label for="other_quantity">Quantità</label>
+            <input id="other_quantity" name="other_quantity" type="number" min="0" value="{{ form_values.get('other_quantity', '0') }}">
+          </div>
+          <div class="input-row">
+            <label for="other_hours">Ore di utilizzo al giorno</label>
+            <input id="other_hours" name="other_hours" type="number" min="0" max="24" step="0.1" value="{{ form_values.get('other_hours', '4') }}">
+          </div>
+        </div>
+      </section>
+
+      <section class="question-card">
+        <div class="question-heading">
+          <span class="question-number">06</span>
+          <div>
+            <h2>Hai un camino o una stufa utilizzata spesso?</h2>
+            <p>Se sì, seleziona il tipo per calcolare il consumo.</p>
+          </div>
+        </div>
+        <div class="choice-grid">
+          <label class="choice-card">
+            <input type="radio" name="heating" value="no" {% if form_values.get('heating', 'no') == 'no' %}checked{% endif %}>
+            <span>No</span>
+          </label>
+          <label class="choice-card">
+            <input type="radio" name="heating" value="yes" {% if form_values.get('heating') == 'yes' %}checked{% endif %}>
+            <span>Sì</span>
+          </label>
+        </div>
+        <div class="heating-fields" id="heating-fields" hidden>
+          <div class="input-row">
+            <label for="heating_type">Tipo</label>
+            <select id="heating_type" name="heating_type">
+              <option value="gas" {% if form_values.get('heating_type', 'gas') == 'gas' %}selected{% endif %}>Stufa a gas</option>
+              <option value="wood" {% if form_values.get('heating_type') == 'wood' %}selected{% endif %}>Camino a legna</option>
+              <option value="electric" {% if form_values.get('heating_type') == 'electric' %}selected{% endif %}>Stufa elettrica</option>
+            </select>
+          </div>
+          <div class="input-row">
+            <label for="heating_days">Giorni di utilizzo al mese</label>
+            <input id="heating_days" name="heating_days" type="number" min="0" max="30" value="{{ form_values.get('heating_days', '15') }}">
+          </div>
+        </div>
+      </section>
+
+      <section class="question-card question-card--result">
+        <div class="question-heading">
+          <span class="question-number">07</span>
+          <div>
+            <h2>È arrivato il momento di calcolare</h2>
+            <p>La stima considera un mese e la produzione dell’energia pulita.</p>
+          </div>
+        </div>
+        <button class="button" type="submit">Calcola il consumo</button>
+      </section>
+    </form>
+  </main>
+
+  <script>
+    const showWhenPositive = (input, target) => {
+      input.addEventListener('input', () => {
+        target.hidden = Number(input.value) <= 0;
+      });
+      target.hidden = Number(input.value) <= 0;
+    };
+
+    showWhenPositive(document.getElementById('computers'), document.getElementById('computer-brands'));
+    showWhenPositive(document.getElementById('lights'), document.getElementById('lights-hours'));
+    showWhenPositive(document.getElementById('screens'), document.getElementById('screen-fields'));
+    showWhenPositive(document.getElementById('other_devices'), document.getElementById('other-fields'));
+
+    const renewableYes = document.querySelector('input[name="renewable"][value="yes"]');
+    const renewableFields = document.getElementById('renewable-fields');
+    const updateRenewableFields = () => {
+      renewableFields.hidden = !renewableYes.checked;
+    };
+    document.querySelectorAll('input[name="renewable"]').forEach((input) => {
+      input.addEventListener('change', updateRenewableFields);
+    });
+    updateRenewableFields();
+
+    const heatingYes = document.querySelector('input[name="heating"][value="yes"]');
+    const heatingFields = document.getElementById('heating-fields');
+    const updateHeatingFields = () => {
+      heatingFields.hidden = !heatingYes.checked;
+    };
+    document.querySelectorAll('input[name="heating"]').forEach((input) => {
+      input.addEventListener('change', updateHeatingFields);
+    });
+    updateHeatingFields();
+  </script>
+</body>
+</html>
